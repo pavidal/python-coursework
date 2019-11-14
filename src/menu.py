@@ -8,7 +8,7 @@ def main():
 
 def pathChecker():
 
-    '''Checks if all additional files exists within the directory 
+    '''Checks if additional files exists within the directory 
     and creates them as necessary.'''
 
     # Looks for the required files
@@ -71,6 +71,10 @@ def pathChecker():
             else:
                 print("Unrecognisable command. Please type again")
                 continue
+    else:
+        time.sleep(2)
+        os.system("cls")
+        return True
     
 if __name__== "__main__":
    main()
