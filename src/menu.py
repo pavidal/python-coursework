@@ -8,8 +8,17 @@ def main():
 
 def pathChecker():
 
-    '''Checks if additional files exists within the directory 
-    and creates them as necessary.'''
+    '''
+    Check for and create required additional files.
+    
+    Returns:
+        exists (Boolean) : Wether all files exists
+
+    Creates:
+        settings.json : Settings file
+        database.txt  : Database of all books, empty.
+        logfile.txt   : Log of all transactions, empty.
+    '''
 
     # Looks for the required files
     settingsPath = path.exists("settings.json")
