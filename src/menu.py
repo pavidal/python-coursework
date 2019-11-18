@@ -1,16 +1,18 @@
-import os.path, time
+import os.path
+import time
 from os import path
+
 
 def main():
     if pathChecker():
         print("yay")
-        #TODO
+        # TODO
+
 
 def pathChecker():
-
     '''
     Check for and create required additional files.
-    
+
     Returns:
         exists (Boolean) : Wether all files exists
 
@@ -39,18 +41,19 @@ def pathChecker():
 
     if False in [settingsPath, dbPath, logPath]:
         while True:
-            createFiles = input("\nWould you like to create the missing files? [y/n]\n>>")
+            createFiles = input(
+                "\nWould you like to create the missing files? [y/n]\n>>")
 
             if createFiles.lower() == "y":
                 print("Creating files...")
 
                 # List of all files required to function and their existence
-                fileList = [["settings.json", settingsPath], 
-                ["database.txt", dbPath], ["logfile.txt", logPath]]
+                fileList = [["settings.json", settingsPath],
+                            ["database.txt", dbPath], ["logfile.txt", logPath]]
 
                 # List of files that doesn't exist, filtered from fileList.
                 files = [f for f in fileList if f[1] == False]
-                
+
                 # Create each missing file
                 for f in files:
                     try:
@@ -60,7 +63,7 @@ def pathChecker():
 
                     except IOError:
                         print("Unable to write files.")
-                        #TODO Error Handling
+                        # TODO Error Handling
 
                 print("Done!")
 
@@ -84,6 +87,7 @@ def pathChecker():
         time.sleep(2)
         os.system("cls")
         return True
-    
-if __name__== "__main__":
-   main()
+
+
+if __name__ == "__main__":
+    main()
