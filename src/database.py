@@ -64,5 +64,3 @@ def formatStr(strList, sym):
         (String) : String of joined list
     """
     return sym.join(strList)
-
-print(read(__DB__))
