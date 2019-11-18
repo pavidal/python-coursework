@@ -28,14 +28,14 @@ def pathChecker():
     # Dict to convert "True" and "False" into something more understandable.
     # Using escape sequences to colour text output
     dict = {}
-    dict["True"] = "\x1b[1;32;40m"+"Exists"+"\x1b[0m"
-    dict["False"] = "\x1b[1;31;40m"+"Missing"+"\x1b[0m"
+    dict[True] = "\x1b[1;32;40m"+"Exists"+"\x1b[0m"
+    dict[False] = "\x1b[1;31;40m"+"Missing"+"\x1b[0m"
 
     # Prints file status
     print("\nChecking for files:")
-    print("\t| Settings file: " + dict[str(settingsPath)])
-    print("\t| Database file: " + dict[str(dbPath)])
-    print("\t| Log file:      " + dict[str(logPath)])
+    print("\t| Settings file: " + dict[settingsPath])
+    print("\t| Database file: " + dict[dbPath])
+    print("\t| Log file:      " + dict[logPath])
 
     if False in [settingsPath, dbPath, logPath]:
         while True:
