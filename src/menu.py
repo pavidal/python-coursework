@@ -28,10 +28,9 @@ def pathChecker():
     logPath = path.exists("logfile.txt")
 
     # Dict to convert "True" and "False" into something more understandable.
-    # Using escape sequences to colour text output
     dict = {}
-    dict[True] = "\x1b[1;32;40m"+"Exists"+"\x1b[0m"
-    dict[False] = "\x1b[1;31;40m"+"Missing"+"\x1b[0m"
+    dict[True] = "Exists"
+    dict[False] = "Missing"
 
     # Prints file status
     print("\nChecking for files:")
@@ -39,6 +38,7 @@ def pathChecker():
     print("\t| Database file: " + dict[dbPath])
     print("\t| Log file:      " + dict[logPath])
 
+    # Checks if any of the previous files are missing
     if False in [settingsPath, dbPath, logPath]:
         while True:
             createFiles = input(
@@ -68,7 +68,7 @@ def pathChecker():
                 print("Done!")
 
                 time.sleep(2)
-                os.system("cls")
+                os.system("cls")    # Clears output of cmd and PowerShell
                 return True
 
             # If the user wishes not to create files: terminate.
