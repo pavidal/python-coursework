@@ -17,7 +17,7 @@ def title(bookTitle):
     return filteredList
 
 
-def author(auth):
+def author(auth):           # TODO: Remove, redundant.
     """
     Searches for books written by this author.
 
@@ -106,3 +106,35 @@ def inDateRange(date, minDate, maxDate):
         return True
     else:
         return False
+
+
+if __name__ == "__main__":
+    import argparse
+
+    # Using argparse for testing purposes.
+    p = argparse.ArgumentParser()
+
+    # Adding arguments for each function above.
+    # Usage: booksearch.py [-h] [-s <TITLE|AUTHOR>] [-i <ID>] 
+    #                      [-b <BORROWED>] [-d <FROMDATE> <TODATE>]
+    p.add_argument("-s", "--search", help="searches for all books matching this term",
+                        metavar="<TITLE|AUTHOR>")
+    p.add_argument("-i", "--idsearch", help="searches for a book matching this id",
+                        metavar="<ID>", type=int)
+    p.add_argument("-b", "--borrow", help="shows list of books that are (or not) borrowed",
+                        metavar="<BORROWED>", type=bool, choices=[True, False])
+    p.add_argument("-d", "--date", help="searches for all books between two dates",
+                        nargs=2, metavar=("<FROMDATE>", "<TODATE>"))
+
+    # Parses Namespace into usable objects (Strings and lists)
+    args = p.parse_args()
+
+    # Checks if arguments are empty to avoid printing empty lists.
+    if args.search != None:
+        print(title(args.search))
+    if args.idsearch != None:
+        print(bookID(args.idsearch))
+    if args.borrow != None:
+        print(borrowed(args.borrow))
+    if args.date != None:
+        print(dateRange(args.date[0], args.date[1]))
