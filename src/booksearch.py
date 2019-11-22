@@ -17,21 +17,6 @@ def title(bookTitle):
     return filteredList
 
 
-def author(auth):           # TODO: Remove, redundant.
-    """
-    Searches for books written by this author.
-
-    Inputs:
-        auth (String) : Author of book
-
-    Returns:
-        filteredList ([[String]]) : 2D list of matching books
-    """
-    library = database.read(database.__DB__)
-    filteredList = [books for books in library if auth in books]
-    return filteredList
-
-
 def bookID(idNum):
     """
     Looks up a book with matching ID.
@@ -115,7 +100,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
 
     # Adding arguments for each function above.
-    # Usage: booksearch.py [-h] [-s <TITLE|AUTHOR>] [-i <ID>] 
+    # Usage: booksearch.py [-h] [-s <TITLE|AUTHOR>] [-i <ID>]
     #                      [-b <BORROWED>] [-d <FROMDATE> <TODATE>]
     p.add_argument("-s", "--search", help="searches for all books matching this term",
                         metavar="<TITLE|AUTHOR>")
