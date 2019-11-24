@@ -2,18 +2,19 @@ import database
 from datetime import datetime
 
 
-def title(bookTitle):
+def search(term):
     """
-    Searches for books with this title.
+    Searches for books matching this title or author.
 
     Inputs:
-        bookTitle (String) : Title of book
+        term (String) : Title or author  of book
 
     Returns:
         filteredList ([[String]]) : 2D list of matching books
     """
     library = database.read(database.__DB__)
-    filteredList = [books for books in library if bookTitle in books]
+    filteredList = [books for books in library if
+                    term.lower() in [books[1].lower(), books[2].lower()]]
     return filteredList
 
 
@@ -97,29 +98,37 @@ if __name__ == "__main__":
     import argparse
 
     # Using argparse for testing purposes.
+    # This takes arguments from terminal and parses it.
     p = argparse.ArgumentParser()
 
     # Adding arguments for each function above.
     # Usage: booksearch.py [-h] [-s <TITLE|AUTHOR>] [-i <ID>]
     #                      [-b <BORROWED>] [-d <FROMDATE> <TODATE>]
     p.add_argument("-s", "--search", help="searches for all books matching this term",
-                        metavar="<TITLE|AUTHOR>")
+                   metavar="<String>")
     p.add_argument("-i", "--idsearch", help="searches for a book matching this id",
-                        metavar="<ID>", type=int)
+                   metavar="<Int>", type=int)
     p.add_argument("-b", "--borrow", help="shows list of books that are (or not) borrowed",
-                        metavar="<BORROWED>", type=bool, choices=[True, False])
+                   metavar="<Bool>")
     p.add_argument("-d", "--date", help="searches for all books between two dates",
-                        nargs=2, metavar=("<FROMDATE>", "<TODATE>"))
+                   nargs=2, metavar=("<Date>", "<Date>"))
 
     # Parses Namespace into usable objects (Strings and lists)
     args = p.parse_args()
 
     # Checks if arguments are empty to avoid printing empty lists.
     if args.search != None:
-        print(title(args.search))
+        print(search(args.search))
     if args.idsearch != None:
         print(bookID(args.idsearch))
     if args.borrow != None:
-        print(borrowed(args.borrow))
+        # This additional if is required as bool("False") == True
+        if args.borrow.lower() in ["true", "t", "y"]:
+            print(borrowed(True))
+        elif args.borrow.lower() in ["false", "f", "n"]:
+            print(borrowed(False))
+        else:
+            print("booksearch.py: error: argument -b/\
+                --borrow: invalid bool value: '%s'" % args.borrow)
     if args.date != None:
         print(dateRange(args.date[0], args.date[1]))
