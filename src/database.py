@@ -1,10 +1,10 @@
-__DB__  = "database.txt"
+__DB__ = "database.txt"
 __LOG__ = "logfile.txt"
 __SET__ = "settings.json"
 __SEP__ = "|"
 
-def read(path):
 
+def read(path):
     """
     Reads and returns a 2D list of records within a database file.
 
@@ -19,16 +19,17 @@ def read(path):
         file = open(str(path), "r")
         records = file.read().split("\n")
         database = [fields.split(__SEP__) for fields in records]
-        return database
 
     except IOError as e:
         print("Cannot read from '%s'. Check if the file is within the root\
  directory or that this application has sufficient permissions\
- to access it." %path)
+ to access it." % path)
         print(e)
 
     finally:
         file.close()
+        return database
+
 
 def append(path, msg):
 
@@ -38,29 +39,94 @@ def append(path, msg):
     Inputs:
         path (String) : path to a file
         msg  (String) : a message to append
+
+    Returns:
+        msg  (String) : appended line
     """
 
     try:
         file = open(str(path), "a")
         file.write(str(msg))
-        file.write()
     except IOError as e:
         print("Cannot write to '%s'. Check if the file is within the root\
  directory or that this application has sufficient permissions\
- to access it." %path)
+ to access it." % path)
         print(e)
     finally:
         file.close()
+        return msg
 
-def formatStr(strList, sym):
+
+def write(path, msg):
+
     """
-    Joins a list with a separator, returns as a string.
+    Writes to a file, overwriting the previous contents.
 
     Inputs:
-        strList ([String])  : List of Strings
-        sym     (Char)      : Separator character
+        path (String) : path to a file
+        msg  (String) : a message to overwrite
 
     Returns:
-        (String) : String of joined list
+        msg  (String) : appended line
     """
-    return sym.join(strList)
+
+    try:
+        file = open(path, "w")
+        file.write(msg)
+
+    except IOError as e:
+        # TODO: Backups/error handling
+        print("Cannot write to '%s'. Check if the file is within the root\
+ directory or that this application has sufficient permissions\
+ to access it." % path)
+        print(e)
+
+    finally:
+        file.close()
+        return msg
+
+    
+def log(memberID, bookID):
+    """
+    Logs checkout and appends to logfile
+
+    Inputs:
+        memberID (Int) : ID of a library member
+        bookID   (Int) : ID of a book to borrow
+
+    Returns:
+        (String) : Log entry to append
+    """
+
+    import datetime as d
+    
+    log = read(__LOG__)
+    transID = str(len(log))
+    date = d.date.today().strftime("%d/%m/%Y")
+    status = "checkout" if int(memberID) > 0 else "return"
+
+    record = [transID, memberID, bookID, date, status]
+    msg = __SEP__.join(record)
+
+    append(__LOG__, msg + "\n")
+    return msg
+
+
+if __name__ == "__main__":
+    import argparse
+
+    # Using argparse for testing purposes.
+    # This takes arguments from terminal and parses it.
+    p = argparse.ArgumentParser()
+
+    # Adding arguments for each function above.
+    # Usage: TODO
+    p.add_argument("-l", "--log", help="log checkout transaction",
+                    nargs=2, metavar=("<MEMBER>", "<BOOKID>"))
+
+    # Parses Namespace into usable objects (Strings and lists)
+    args = p.parse_args()
+
+    # Checks if arguments are empty to avoid printing empty lists.
+    if args.log != None:
+        print(log(args.log[0], args.log[1]))
