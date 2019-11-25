@@ -1,5 +1,4 @@
 import database
-from datetime import datetime
 
 
 def search(term):
@@ -28,12 +27,13 @@ def bookID(idNum):
         idNum (String) : Book ID number
 
     Returns:
-        filteredList ([String]) : list of matching book
+        filteredList ([[String]]) : 2D list of matching books
     """
     library = database.read(database.__DB__)
     # The [0] at the end is used to convert
     # a 2D list (with 1 element) into 1D list
-    filteredList = [books for books in library if books[0] == str(idNum)][0]
+    # idNum is left as String because there is no int comparison involved
+    filteredList = [books for books in library if books[0] == str(idNum)]
     return filteredList
 
 
@@ -91,6 +91,7 @@ def inDateRange(date, minDate, maxDate):
     Returns:
         (Boolean) : If date is between min and max
     """
+    from datetime import datetime
 
     # Parses inputs into datetime objects for comparison
     dateObj = datetime.strptime(date, "%d/%m/%Y")
