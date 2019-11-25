@@ -100,17 +100,27 @@ def log(memberID, bookID):
 
     import datetime as d
     
+    # Reads logfile content
     log = read(__LOG__)
+
+    # Gathering information for each field
     transID = str(len(log))
     date = d.date.today().strftime("%d/%m/%Y")
     status = "checkout" if int(memberID) > 0 else "return"
 
+    # Building record/entry
     record = [transID, memberID, bookID, date, status]
     msg = __SEP__.join(record)
 
     append(__LOG__, msg + "\n")
     return msg
 
+
+def formatStr(database):
+
+    lines = [__SEP__.join(records) for records in database]
+    file = "\n".join(lines)
+    return file
 
 if __name__ == "__main__":
     import argparse
