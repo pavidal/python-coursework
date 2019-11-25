@@ -13,6 +13,8 @@ def search(term):
         filteredList ([[String]]) : 2D list of matching books
     """
     library = database.read(database.__DB__)
+
+    # Filters library to books that either matches the ID or Title field
     filteredList = [books for books in library if
                     term.lower() in [books[1].lower(), books[2].lower()]]
     return filteredList
@@ -26,10 +28,12 @@ def bookID(idNum):
         idNum (String) : Book ID number
 
     Returns:
-        filteredList ([[String]]) : 2D list of matching books
+        filteredList ([String]) : list of matching book
     """
     library = database.read(database.__DB__)
-    filteredList = [books for books in library if books[0] == str(idNum)]
+    # The [0] at the end is used to convert
+    # a 2D list (with 1 element) into 1D list
+    filteredList = [books for books in library if books[0] == str(idNum)][0]
     return filteredList
 
 
@@ -44,6 +48,9 @@ def borrowed(isBorrowed):
         filteredList ([[String]]) : 2D list of matching books
     """
     library = database.read(database.__DB__)
+
+    # Borrowed books will always have ID > 0;
+    # status can be filtered with this
     if isBorrowed:
         filteredList = [books for books in library if books[4] != "0"]
     else:
@@ -84,6 +91,8 @@ def inDateRange(date, minDate, maxDate):
     Returns:
         (Boolean) : If date is between min and max
     """
+
+    # Parses inputs into datetime objects for comparison
     dateObj = datetime.strptime(date, "%d/%m/%Y")
     fromObj = datetime.strptime(minDate, "%d/%m/%Y")
     toObj = datetime.strptime(maxDate, "%d/%m/%Y")
@@ -122,6 +131,7 @@ if __name__ == "__main__":
     if args.idsearch != None:
         print(bookID(args.idsearch))
     if args.borrow != None:
+
         # This additional if is required as bool("False") == True
         if args.borrow.lower() in ["true", "t", "y"]:
             print(borrowed(True))
