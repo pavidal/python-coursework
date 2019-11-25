@@ -12,7 +12,7 @@ def checkout(memberID, bookID):
 
     Returns:
         (String) : Database file to be written
-    
+
     Raises:
         IndexError : "No such book with ID"
         Exception  : "Book is borrowed"
@@ -24,15 +24,23 @@ def checkout(memberID, bookID):
     if not bs.bookID(bookID):
         raise IndexError("No such book with ID")
     else:
+        # Checks if IDs are int and more than 4 digits
         if int(memberID) < 10000 and int(bookID) < 10000:
+            # Searches through each record for matching bookID
             for book in library:
                 if book[0] == bookID:
+                    # Checks if this book is borrowed
                     if book[4] == "0":
                         book[4] = memberID
-                        break
+
                     else:
                         raise Exception("Book is borrowed")
-            return db.formatStr(library)
+
+            msg = db.formatStr(library)
+            db.write(db.__DB__, msg)
+            db.log(memberID, bookID)
+
+            return msg
         else:
             raise Exception("IDs out of range")
 
@@ -45,7 +53,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
 
     # Adding arguments for each function above.
-    # Usage:
+    # Usage: bookcheckout.py [-h] [-c <MEMBER> <BOOKID>]
     p.add_argument("-c", "--checkout", help="checkout a book to a member",
                    nargs=2, metavar=("<MEMBER>", "<BOOKID>"))
 
