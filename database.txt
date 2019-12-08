@@ -1,0 +1,28 @@
+1|The Shining|Stephen King|17/12/2011|0
+2|The Shining|Stephen King|17/12/2011|0
+3|The Shining|Stephen King|17/12/2011|0
+4|The Shining|Stephen King|17/12/2011|0
+5|Harry Potter and the Prisoner of Azkaban|J.K. Rowling|22/12/2011|0
+6|Harry Potter and the Prisoner of Azkaban|J.K. Rowling|22/12/2011|0
+7|Harry Potter and the Prisoner of Azkaban|J.K. Rowling|22/12/2011|0
+8|Harry Potter and the Philosopher's Stone|J.K. Rowling|22/12/2011|0
+9|Harry Potter and the Philosopher's Stone|J.K. Rowling|22/12/2011|0
+10|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0
+11|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0
+12|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0
+13|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0
+14|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0
+15|A-Level Physics: AQA Year 1 & 2|CGP Books|02/01/2012|0
+16|A-Level Physics: AQA Year 1 & 2|CGP Books|02/01/2012|0
+17|A-Level Physics: AQA Year 1 & 2|CGP Books|02/01/2012|0
+18|Metro 2033|Dmitry Glukhovsky|15/02/2012|0
+19|Metro 2033|Dmitry Glukhovsky|15/02/2012|0
+20|Metro 2034|Dmitry Glukhovsky|15/02/2012|0
+21|Metro 2034|Dmitry Glukhovsky|15/02/2012|0
+22|52 Things To Do While You Poo|Hugh Jassburn|24/02/2012|0
+23|Uzumaki|Junji Ito|04/09/2012|0
+24|Uzumaki|Junji Ito|04/09/2012|0
+25|Gyo|Junji Ito|07/01/2013|0
+26|Kafka on the Shore|Haruki Murakami|20/03/2013|0
+27|Kafka on the Shore|Haruki Murakami|20/03/2013|0
+28|Kafka on the Shore|Haruki Murakami|20/03/2013|0
