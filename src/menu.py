@@ -1,10 +1,15 @@
 import os.path
 import time
 from tkinter import (Tk, messagebox, Frame, Label,
-                     Button, Entry, OptionMenu, StringVar)
-from tkinter.ttk import (Treeview)
+                     Button, Entry, OptionMenu, StringVar,
+                     Checkbutton, BooleanVar)
+from tkinter.ttk import (Treeview, Scrollbar)
+from database import (read, __DB__)
+import booksearch as bs
+import bookreturn as br
+import bookcheckout as bc
 
-
+# TODO: Remove CLI messages
 def pathChecker():
     '''
     Check for and create required additional files.
@@ -88,6 +93,22 @@ def pathChecker():
 def search():
     """
     """
+    opt     = var.get()
+    term    = searchBox.get()
+    term2   = dateBox.get()
+
+    # Case statement (substitute) for different search areas
+    # Each key is an option in the OptionMenu
+    searchBy = {
+        "Title & Author"    : bs.search(term),
+        "ID"                : bs.bookID(term),
+        "Date"              : bs.dateRange(term, term2),
+        "Status"            : bs.borrowed(bool(term))
+    }
+    query = searchBy[opt]   # Make & stores a query (2D list)
+
+    # Repopulates table
+    populate(query)
 
 
 def checkIfDate(event):
@@ -97,9 +118,130 @@ def checkIfDate(event):
         dateBox.grid_remove()
 
 
+def populate(library):
+    """
+    """
+    # Clears table
+    table.delete(*table.get_children())
+
+    # Inserts each book into the table
+    # where text is the key field
+    for book in library:
+        table.insert("", int(book[0]), text=book[0], values=(book[1], book[2], book[3], book[4]))
+
+
+def checkinBook():
+    """
+    """
+
+    try:
+        # Gets book info from table selection
+        selection   = table.focus()
+        book        = table.item(selection)
+        bookID      = book["text"]
+        booktitle   = book["values"][0]
+
+        checkoutBtn["state"]    = "disabled"
+        returnBtn["state"]      = "disabled"
+
+        msg = "Are you sure you want to check in \
+            \nID: %s\
+            \nTITLE: %s" % (bookID, booktitle)
+
+        # Verifies action before checking in
+        confirmed = messagebox.askquestion("Confirm check-in", msg)
+        
+        if confirmed == "yes":
+            br.returnBook(bookID)
+            populate(read(__DB__))
+
+    except IndexError:
+        # Flashes check-in button if nothing is selected
+        returnBtn.flash()
+    except Exception as e:
+        # Displays warnings raised by bookreturn
+        messagebox.showwarning("Watch out!", e)
+    finally:
+        checkoutBtn["state"]    = "normal"
+        returnBtn["state"]      = "normal"
+        
+
+def checkoutBook():
+    """
+    """
+
+    try:
+        # Gets book info from table selection
+        selection   = table.focus()
+        book        = table.item(selection)
+        bookID      = book["text"]
+        booktitle   = book["values"][0]
+
+        if bookID != "":
+
+            checkoutBtn["state"]    = "disabled"
+            returnBtn["state"]      = "disabled"
+
+            def checkout():
+                try:
+                    memberID = int(txtbox.get())
+
+                    msg = "Are you sure you want to checkout \
+                        \nID: %s\
+                        \nTITLE: %s\
+                        \nTO MEMBERID: %s" % (bookID, booktitle, memberID)
+
+                    # Verifies action before checking in
+                    confirmed = messagebox.askquestion("Confirm checkout", msg)
+                    
+                    if confirmed == "yes":
+                        bc.checkout(memberID, bookID)
+                        populate(read(__DB__))
+                except ValueError:
+                    messagebox.showwarning("Watch out!", "Input is not a number")
+                    dialogue.focus_force()
+                except Exception as e:
+                    # Displays warnings raised by bookreturn
+                    messagebox.showwarning("Watch out!", e)
+                    dialogue.focus_force()
+                finally:
+                    dialogue.destroy()
+                    checkoutBtn["state"]    = "normal"
+                    returnBtn["state"]      = "normal"
+
+            ### BUILDING INPUT DIALOGUE ###
+            dialogue = Tk()
+            dialogue.title("Borrow a Book")
+            dialogue.geometry("300x80")
+            dialogue.resizable(False, False)
+
+            lbl         = Label(dialogue, text="Enter Member ID")
+            txtbox      = Entry(dialogue)
+            okBtn       = Button(dialogue, text="Okay", 
+                            command=checkout)
+            cancelBtn   = Button(dialogue, text="Cancel", 
+                                    command=lambda:dialogue.destroy())
+
+            lbl.pack(side="top", fill="x", padx=10)
+            txtbox.pack(side="top", fill="x", padx=10)
+            okBtn.pack(side="left", padx=50)
+            cancelBtn.pack(side="right", padx=50)
+            ### END OF DIALOGUE BUILDING ###
+
+    except IndexError:
+        # Flashes check-in button if nothing is selected
+        checkoutBtn.flash()
+
 if __name__ == "__main__":
     # TODO Add args
     print("Hello.")
+
+
+###########################
+#                         #
+# Creating GUI Components #
+#                         #
+###########################
 
 # Creating main window
 win = Tk()
@@ -113,7 +255,9 @@ if not pathChecker():
 
 print("All files exists.")
 
+
 ### BUILDING FRAME (TOOLBAR) ###
+
 # A frame is used to prevent
 toolbar = Frame(win)
 
@@ -131,19 +275,24 @@ searchBtn.grid(column=2, row=0, padx=5, pady=5)
 
 # Search options drop list. Chooses which field to search.
 # Every time the option is changed, checkIfDate() is called.
-options = ["Title", "Author", "Date"]
+options = ["Title & Author", "ID", "Date", "Status"]
 var = StringVar(toolbar)
 searchOptn = OptionMenu(toolbar, var, *options, command=checkIfDate)
-var.set("Title")
+var.set(options[0])
 searchOptn.grid(column=3, row=0, padx=5, pady=5)
 
 toolbar.grid(column=0, row=0)
 
+resetBtn = Button(toolbar, text="Reset Table", 
+                    command=lambda:populate(read(__DB__)))
+resetBtn.grid(column=4, row=0, padx=5, pady=5) 
+
 ### END OF FRAME BUILDING ###
+
 
 ### BUILDING TREEVIEW (TABLE) ###
 
-table = Treeview(win)
+table = Treeview(win, height=32)
 table["columns"] = ("1", "2", "3", "4")     # Adding indexes
 
 # Defining all columns and their width.
@@ -154,7 +303,7 @@ table.heading("#0", text="ID")
 table.column("1", width=452, minwidth=30)
 table.heading("1", text="Title")
 
-table.column("2", width=278, minwidth=30)
+table.column("2", width=270, minwidth=30)
 table.heading("2", text="Author")
 
 table.column("3", width=150, minwidth=30)
@@ -163,11 +312,39 @@ table.heading("3", text="Date")
 table.column("4", width=80, minwidth=30)
 table.heading("4", text="Member")
 
-# TODO: Populate table
+# Populates the table with the entire database
+populate(read(__DB__))
 
-table.grid(column=0, row=1, padx=5, pady=5)
+table.grid(column=0, row=1, padx=1, pady=5, sticky="ns")
+
+# Creating a vertical scrollbar for the table
+scroll = Scrollbar(win, orient="vertical", command=table.yview)
+scroll.grid(column=1, row=1, sticky="ns")   # Sticky is for resizing 
+
+# adds another option for communication with scrollbar
+table.configure(yscrollcommand=scroll.set)
+
+### END OF TREEVIEW BUILDING ###
 
 
+### BUILDING FOOTER ###
+
+checkoutBtn = Button(win, text="Checkout", command=checkoutBook)
+checkoutBtn.grid(column=0, row=2, padx=5, pady=5, sticky="e")
+
+returnBtn = Button(win, text="Check-in", command=checkinBook)
+returnBtn.grid(column=0, row=2, padx=80, pady=5, sticky="e")    # too lazy to use a frame
+
+""" useSelection = BooleanVar()
+returnCbtn = Checkbutton(win, text="Check-in with Selection", 
+                        variable=useSelection, onvalue=True, offvalue=False)
+useSelection.set(True)
+returnCbtn.grid(column=0, row=2, padx= 150, pady=5, sticky="e") """
+
+popularBtn = Button(win, text="Monthly Charts")
+popularBtn.grid(column=0, row=2, padx=5, pady=5, sticky="w")
+
+### END OF FOOTER BUILDING ###
 
 win.deiconify()  # Shows window after all widgets are created
 
