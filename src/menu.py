@@ -184,7 +184,8 @@ def checkoutBook():
 
             def checkout():
                 try:
-                    memberID = int(txtbox.get())
+                    memberID = txtbox.get()
+                    int(memberID)           # Tests if input is integer
 
                     msg = "Are you sure you want to checkout \
                         \nID: %s\
@@ -197,6 +198,8 @@ def checkoutBook():
                     if confirmed == "yes":
                         bc.checkout(memberID, bookID)
                         populate(read(__DB__))
+                        messagebox.showinfo("Success!", 
+                            "Book successfully lent to ID: " + memberID)
                 except ValueError:
                     messagebox.showwarning("Watch out!", "Input is not a number")
                     dialogue.focus_force()
