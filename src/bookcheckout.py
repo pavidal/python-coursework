@@ -25,7 +25,8 @@ def checkout(memberID, bookID):
         raise IndexError("No such book with ID")
     else:
         # Checks if IDs are int and more than 4 digits
-        if int(memberID) < 10000 and int(bookID) < 10000:
+        if (int(memberID) < 10000 and int(bookID) < 10000
+            and int(memberID) > 0 and int(bookID) > 0):
             # Searches through each record for matching bookID
             for book in library:
                 if book[0] == bookID:
