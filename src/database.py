@@ -85,7 +85,7 @@ def write(path, msg):
         file.close()
         return msg
 
-    
+
 def log(memberID, bookID):
     """
     Logs checkout and appends to logfile
@@ -99,7 +99,7 @@ def log(memberID, bookID):
     """
 
     import datetime as d
-    
+
     # Reads logfile content
     log = read(__LOG__)
 
@@ -133,6 +133,8 @@ if __name__ == "__main__":
     # Usage: TODO
     p.add_argument("-l", "--log", help="log checkout transaction",
                     nargs=2, metavar=("<MEMBER>", "<BOOKID>"))
+    p.add_argument("-r", "--read", help="reads a database formatted text file",
+                    metavar="<PATH>")
 
     # Parses Namespace into usable objects (Strings and lists)
     args = p.parse_args()
@@ -140,3 +142,6 @@ if __name__ == "__main__":
     # Checks if arguments are empty to avoid printing empty lists.
     if args.log != None:
         print(log(args.log[0], args.log[1]))
+    if args.read != None:
+        for i in read(args.read):
+            print(i)
