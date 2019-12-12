@@ -34,10 +34,10 @@ def pathChecker():
     dict[False] = "Missing"
 
     # Prints file status
-    print("\nChecking for files:")
+    #print("\nChecking for files:")
     #print("\t| Settings file: " + dict[settingsPath])
-    print("\t| Database file: " + dict[dbPath])
-    print("\t| Log file:      " + dict[logPath])
+    #print("\t| Database file: " + dict[dbPath])
+    #print("\t| Log file:      " + dict[logPath])
 
     # Checks if any of the previous files are missing
     if False in [dbPath, logPath]:
@@ -49,7 +49,7 @@ def pathChecker():
 
             # Creating files if user replies "y" (Yes)
             if createFiles:
-                print("Creating files...")
+                #print("Creating files...")
 
                 # List of all files required to function and their existence
                 fileList = [["database.txt", dbPath], ["logfile.txt", logPath]]
@@ -61,7 +61,7 @@ def pathChecker():
                 for f in files:
                     try:
                         file = open(f[0], "w+")
-                        print("Created", f[0])
+                        #print("Created", f[0])
                         file.close()
 
                     except IOError:
@@ -150,7 +150,7 @@ def checkinBook():
 
         # Verifies action before checking in
         confirmed = messagebox.askquestion("Confirm check-in", msg)
-        
+
         if confirmed == "yes":
             br.returnBook(bookID)
             populate(read(__DB__))
@@ -164,7 +164,7 @@ def checkinBook():
     finally:
         checkoutBtn["state"]    = "normal"
         returnBtn["state"]      = "normal"
-        
+
 
 def checkoutBook():
     """
@@ -194,11 +194,11 @@ def checkoutBook():
 
                     # Verifies action before checking in
                     confirmed = messagebox.askquestion("Confirm checkout", msg)
-                    
+
                     if confirmed == "yes":
                         bc.checkout(memberID, bookID)
                         populate(read(__DB__))
-                        messagebox.showinfo("Success!", 
+                        messagebox.showinfo("Success!",
                             "Book successfully lent to ID: " + memberID)
                 except ValueError:
                     messagebox.showwarning("Watch out!", "Input is not a number")
@@ -220,9 +220,9 @@ def checkoutBook():
 
             lbl         = Label(dialogue, text="Enter Member ID")
             txtbox      = Entry(dialogue)
-            okBtn       = Button(dialogue, text="Okay", 
+            okBtn       = Button(dialogue, text="Okay",
                             command=checkout)
-            cancelBtn   = Button(dialogue, text="Cancel", 
+            cancelBtn   = Button(dialogue, text="Cancel",
                                     command=lambda:dialogue.destroy())
 
             lbl.pack(side="top", fill="x", padx=10)
@@ -237,7 +237,8 @@ def checkoutBook():
 
 if __name__ == "__main__":
     # TODO Add args
-    print("Hello.")
+    #print("Hello.")
+    pass
 
 
 ###########################
@@ -286,9 +287,9 @@ searchOptn.grid(column=3, row=0, padx=5, pady=5)
 
 toolbar.grid(column=0, row=0)
 
-resetBtn = Button(toolbar, text="Reset Table", 
+resetBtn = Button(toolbar, text="Reset Table",
                     command=lambda:populate(read(__DB__)))
-resetBtn.grid(column=4, row=0, padx=5, pady=5) 
+resetBtn.grid(column=4, row=0, padx=5, pady=5)
 
 ### END OF FRAME BUILDING ###
 
@@ -322,7 +323,7 @@ table.grid(column=0, row=1, padx=1, pady=5, sticky="ns")
 
 # Creating a vertical scrollbar for the table
 scroll = Scrollbar(win, orient="vertical", command=table.yview)
-scroll.grid(column=1, row=1, sticky="ns")   # Sticky is for resizing 
+scroll.grid(column=1, row=1, sticky="ns")   # Sticky is for resizing
 
 # adds another option for communication with scrollbar
 table.configure(yscrollcommand=scroll.set)
@@ -339,7 +340,7 @@ returnBtn = Button(win, text="Check-in", command=checkinBook)
 returnBtn.grid(column=0, row=2, padx=80, pady=5, sticky="e")    # too lazy to use a frame
 
 """ useSelection = BooleanVar()
-returnCbtn = Checkbutton(win, text="Check-in with Selection", 
+returnCbtn = Checkbutton(win, text="Check-in with Selection",
                         variable=useSelection, onvalue=True, offvalue=False)
 useSelection.set(True)
 returnCbtn.grid(column=0, row=2, padx= 150, pady=5, sticky="e") """
