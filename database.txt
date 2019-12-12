@@ -1,40 +1,40 @@
-1|The Shining|Stephen King|17/12/2011|0001
-2|The Shining|Stephen King|17/12/2011|9999
+1|The Shining|Stephen King|17/12/2011|0
+2|The Shining|Stephen King|17/12/2011|0
 3|The Shining|Stephen King|17/12/2011|0
-4|The Shining|Stephen King|17/12/2011|0
+4|The Shining|Stephen King|17/12/2011|2143
 5|Harry Potter and the Prisoner of Azkaban|J.K. Rowling|22/12/2011|0
 6|Harry Potter and the Prisoner of Azkaban|J.K. Rowling|22/12/2011|0
 7|Harry Potter and the Prisoner of Azkaban|J.K. Rowling|22/12/2011|0
 8|Harry Potter and the Philosopher's Stone|J.K. Rowling|22/12/2011|0
 9|Harry Potter and the Philosopher's Stone|J.K. Rowling|22/12/2011|0
-10|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0922
+10|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|3456
 11|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0
-12|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0
-13|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0
+12|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|2211
+13|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|5345
 14|A-Level Maths for Edexcel: Year 1 & 2|CGP Books|02/01/2012|0
-15|A-Level Physics: AQA Year 1 & 2|CGP Books|02/01/2012|0
-16|A-Level Physics: AQA Year 1 & 2|CGP Books|02/01/2012|0
-17|A-Level Physics: AQA Year 1 & 2|CGP Books|02/01/2012|1111
+15|A-Level Physics: AQA Year 1 & 2|CGP Books|02/01/2012|5643
+16|A-Level Physics: AQA Year 1 & 2|CGP Books|02/01/2012|5644
+17|A-Level Physics: AQA Year 1 & 2|CGP Books|02/01/2012|0
 18|Metro 2033|Dmitry Glukhovsky|15/02/2012|0
-19|Metro 2033|Dmitry Glukhovsky|15/02/2012|0
-20|Metro 2034|Dmitry Glukhovsky|15/02/2012|0
+19|Metro 2033|Dmitry Glukhovsky|15/02/2012|454
+20|Metro 2034|Dmitry Glukhovsky|15/02/2012|164
 21|Metro 2034|Dmitry Glukhovsky|15/02/2012|0
-22|52 Things To Do While You Poo|Hugh Jassburn|24/02/2012|0
+22|52 Things To Do While You Poo|Hugh Jassburn|24/02/2012|67
 23|Uzumaki|Junji Ito|04/09/2012|0
-24|Uzumaki|Junji Ito|04/09/2012|9240
-25|Gyo|Junji Ito|07/01/2013|0
-26|Kafka on the Shore|Haruki Murakami|20/03/2013|0
-27|Kafka on the Shore|Haruki Murakami|20/03/2013|0
+24|Uzumaki|Junji Ito|04/09/2012|0
+25|Gyo|Junji Ito|07/01/2013|123
+26|Kafka on the Shore|Haruki Murakami|20/03/2013|436
+27|Kafka on the Shore|Haruki Murakami|20/03/2013|7894
 28|Kafka on the Shore|Haruki Murakami|20/03/2013|0
 29|Guinness World Records 2014|Guinness World Records|13/09/2013|0
-30|Guinness World Records 2014|Guinness World Records|13/09/2013|0
-31|Guinness World Records 2014|Guinness World Records|13/09/2013|0
-32|Guinness World Records 2014|Guinness World Records|13/09/2013|0
-33|Somali-English/English-Somali Dictionary & Phrasebook|C. Quadir|21/10/2013|0
+30|Guinness World Records 2014|Guinness World Records|13/09/2013|5251
+31|Guinness World Records 2014|Guinness World Records|13/09/2013|3451
+32|Guinness World Records 2014|Guinness World Records|13/09/2013|3335
+33|Somali-English/English-Somali Dictionary & Phrasebook|C. Quadir|21/10/2013|5432
 34|Somali-English/English-Somali Dictionary & Phrasebook|C. Quadir|21/10/2013|0
 35|Somali-English/English-Somali Dictionary & Phrasebook|C. Quadir|21/10/2013|0
 36|11.22.63|Stephen King|21/10/2013|0
-37|11.22.63|Stephen King|21/10/2013|0
-38|Gyo|Junji Ito|07/01/2014|0
+37|11.22.63|Stephen King|21/10/2013|5436
+38|Gyo|Junji Ito|07/01/2014|3245
 39|Gyo|Junji Ito|07/01/2014|0
 40|Recursion|Blake Crouch|07/01/2014|0
