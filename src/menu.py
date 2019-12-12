@@ -1,15 +1,13 @@
-import os.path
-import time
 from tkinter import (Tk, messagebox, Frame, Label,
-                     Button, Entry, OptionMenu, StringVar,
-                     Checkbutton, BooleanVar)
+                     Button, Entry, OptionMenu, StringVar)
 from tkinter.ttk import (Treeview, Scrollbar)
-from database import (read, __DB__)
-import booksearch as bs
-import bookreturn as br
-import bookcheckout as bc
 
-# TODO: Remove CLI messages
+import matplotlib.figure as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+from database import (read, __DB__)
+
+
 def pathChecker():
     '''
     Check for and create required additional files.
@@ -22,6 +20,9 @@ def pathChecker():
         database.txt  : Database of all books, empty.
         logfile.txt   : Log of all transactions, empty.
     '''
+
+    import os.path
+    import time
 
     # Looks for the required files
     #settingsPath = os.path.exists("settings.json")
@@ -92,7 +93,11 @@ def pathChecker():
 
 def search():
     """
+    Searches for book matching entered value and field.
+    Populates values onto the table.
     """
+    import booksearch as bs
+
     opt     = var.get()
     term    = searchBox.get()
     term2   = dateBox.get()
@@ -108,10 +113,15 @@ def search():
     query = searchBy[opt]   # Make & stores a query (2D list)
 
     # Repopulates table
-    populate(query)
+    if term != "":
+        populate(query)
 
 
 def checkIfDate(event):
+    """
+    Checks if the search option is set to date.
+    If so, it shows a second search box, otherwise it's hidden.
+    """
     if var.get() == "Date":
         dateBox.grid()
     else:
@@ -120,6 +130,10 @@ def checkIfDate(event):
 
 def populate(library):
     """
+    Takes a 2D list and inserts each row into the table
+
+    Inputs:
+        library ([[String]])    : a 2D list to populate the table with.
     """
     # Clears table
     table.delete(*table.get_children())
@@ -132,7 +146,9 @@ def populate(library):
 
 def checkinBook():
     """
+    Checks in a book that has been selected on the table.
     """
+    import bookreturn as br
 
     try:
         # Gets book info from table selection
@@ -140,9 +156,6 @@ def checkinBook():
         book        = table.item(selection)
         bookID      = book["text"]
         booktitle   = book["values"][0]
-
-        checkoutBtn["state"]    = "disabled"
-        returnBtn["state"]      = "disabled"
 
         msg = "Are you sure you want to check in \
             \nID: %s\
@@ -161,14 +174,13 @@ def checkinBook():
     except Exception as e:
         # Displays warnings raised by bookreturn
         messagebox.showwarning("Watch out!", e)
-    finally:
-        checkoutBtn["state"]    = "normal"
-        returnBtn["state"]      = "normal"
 
 
 def checkoutBook():
     """
+    Checks out a book that's selected on the table.
     """
+    import bookcheckout as bc
 
     try:
         # Gets book info from table selection
@@ -177,11 +189,12 @@ def checkoutBook():
         bookID      = book["text"]
         booktitle   = book["values"][0]
 
+        # Checks if the user actually selects something from the table
         if bookID != "":
 
-            checkoutBtn["state"]    = "disabled"
-            returnBtn["state"]      = "disabled"
-
+            # Sorry you have to see this function inception
+            # I can't figure out a nicer way to do this considering
+            # that tkinter doesn't have input dialogs
             def checkout():
                 try:
                     memberID = txtbox.get()
@@ -209,22 +222,23 @@ def checkoutBook():
                     dialogue.focus_force()
                 finally:
                     dialogue.destroy()
-                    checkoutBtn["state"]    = "normal"
-                    returnBtn["state"]      = "normal"
 
             ### BUILDING INPUT DIALOGUE ###
+            # Creating window
             dialogue = Tk()
             dialogue.title("Borrow a Book")
             dialogue.geometry("300x80")
             dialogue.resizable(False, False)
 
+            # Delcaring components
             lbl         = Label(dialogue, text="Enter Member ID")
             txtbox      = Entry(dialogue)
             okBtn       = Button(dialogue, text="Okay",
-                            command=checkout)
+                                    command=checkout)
             cancelBtn   = Button(dialogue, text="Cancel",
                                     command=lambda:dialogue.destroy())
 
+            # Placing components
             lbl.pack(side="top", fill="x", padx=10)
             txtbox.pack(side="top", fill="x", padx=10)
             okBtn.pack(side="left", padx=50)
@@ -232,13 +246,66 @@ def checkoutBook():
             ### END OF DIALOGUE BUILDING ###
 
     except IndexError:
-        # Flashes check-in button if nothing is selected
+        # Flashes checkout button if nothing is selected
         checkoutBtn.flash()
 
-if __name__ == "__main__":
-    # TODO Add args
-    #print("Hello.")
-    pass
+
+def showGraph():
+    """
+    Creates a window that shows a popularity graph.
+    """
+    from booklist import monthly
+
+    # Creating a window
+    statsWin = Tk()
+    statsWin.title("Book Popularity")
+    statsWin.geometry("1024x768")
+    statsWin.resizable(False, False)
+
+    # Creating the graph
+    graphFrame = Frame(statsWin)
+    fig = plt.Figure(figsize=(10.24, 7.68), dpi=100, tight_layout=True)
+    area = fig.add_subplot(111)
+
+    statsWin.withdraw()     # Hides window until done
+
+    # translating options into respective values (days)
+    optn = timeVar.get()
+    tRange = {
+        "Last Month": 30,
+        "Last 3 Months": 90,
+        "Last 6 Months": 180,
+        "Last Year": 365,
+    }
+
+    # gets all transactions from log that is within selected time frame
+    bookList = monthly(tRange[optn])
+
+    x = list(bookList.keys())
+    y = list(bookList.values())
+
+    if len(x) < 5 or len(y) < 5:
+        messagebox.showwarning("Feature Unavailable.",
+            "This feature is not available as the log file is not populated enough.")
+        return
+
+    # Embeds graph into Tk
+    graph = FigureCanvasTkAgg(fig, graphFrame)
+
+    # Plotting graph
+    area.bar(x, y)
+    area.set_xlabel("Book Titles")
+    area.set_ylabel("Copies on loan")
+
+    # rotates label 90 degrees for readability
+    [label.set_rotation(90) for label in area.get_xticklabels()]
+
+    graph.draw()
+    graph.get_tk_widget().pack()
+    graphFrame.pack()
+
+    statsWin.deiconify()        # show window
+    statsWin.mainloop()
 
 
 ###########################
@@ -247,17 +314,17 @@ if __name__ == "__main__":
 #                         #
 ###########################
 
-# Creating main window
+### CREATING MAIN WINDOW ###
 win = Tk()
 win.withdraw()  # Hides root window when using messageboxes in pathChecker()
 win.title("Vivlio - Library System")
 win.geometry("1024x768")
 win.resizable(False, False)
 
+# Checks for database.txt and logfile.txt
+# If these aren't created or doesn't exist: quit.
 if not pathChecker():
     quit()
-
-print("All files exists.")
 
 
 ### BUILDING FRAME (TOOLBAR) ###
@@ -282,7 +349,7 @@ searchBtn.grid(column=2, row=0, padx=5, pady=5)
 options = ["Title & Author", "ID", "Date", "Status"]
 var = StringVar(toolbar)
 searchOptn = OptionMenu(toolbar, var, *options, command=checkIfDate)
-var.set(options[0])
+var.set(options[0])         # Sets default option
 searchOptn.grid(column=3, row=0, padx=5, pady=5)
 
 toolbar.grid(column=0, row=0)
@@ -339,18 +406,19 @@ checkoutBtn.grid(column=0, row=2, padx=5, pady=5, sticky="e")
 returnBtn = Button(win, text="Check-in", command=checkinBook)
 returnBtn.grid(column=0, row=2, padx=80, pady=5, sticky="e")    # too lazy to use a frame
 
-""" useSelection = BooleanVar()
-returnCbtn = Checkbutton(win, text="Check-in with Selection",
-                        variable=useSelection, onvalue=True, offvalue=False)
-useSelection.set(True)
-returnCbtn.grid(column=0, row=2, padx= 150, pady=5, sticky="e") """
-
-popularBtn = Button(win, text="Monthly Charts")
+popularBtn = Button(win, text="Monthly Charts", command=showGraph)
 popularBtn.grid(column=0, row=2, padx=5, pady=5, sticky="w")
+
+# Option menu used with the popularity function. Denotes time range.
+timeRange = ["Last Month", "Last 3 Months", "Last 6 Months", "Last Year"]
+timeVar = StringVar(win)
+timeRangeOptn = OptionMenu(win, timeVar, *timeRange)
+timeVar.set(timeRange[0])
+timeRangeOptn.grid(column=0, row=2, padx=110, pady=5, sticky="w")
 
 ### END OF FOOTER BUILDING ###
 
 win.deiconify()  # Shows window after all widgets are created
-
-
 win.mainloop()
+
+### END OF MAIN WINDOW CREATION ###
