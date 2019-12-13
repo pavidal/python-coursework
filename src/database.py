@@ -99,6 +99,7 @@ def log(memberID, bookID):
     """
 
     import datetime as d
+    import booksearch as bs
 
     # Reads logfile content
     log = read(__LOG__)
@@ -107,9 +108,10 @@ def log(memberID, bookID):
     transID = str(len(log))
     date = d.date.today().strftime("%d/%m/%Y")
     status = "checkout" if int(memberID) > 0 else "return"
+    bookName = bs.bookID(bookID)[0][1]
 
     # Building record/entry
-    record = [transID, memberID, bookID, date, status]
+    record = [transID, memberID, bookName, date, status]
     msg = __SEP__.join(record)
 
     append(__LOG__, msg + "\n")
@@ -130,11 +132,17 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
 
     # Adding arguments for each function above.
-    # Usage: TODO
+    # Usage: database.py [-h] [-l <MEMBER> <BOOKID>] [-r <PATH>] 
+    #                   [-a <PATH> <STRING>] [-w <PATH> <STRING>]
     p.add_argument("-l", "--log", help="log checkout transaction",
                     nargs=2, metavar=("<MEMBER>", "<BOOKID>"))
     p.add_argument("-r", "--read", help="reads a database formatted text file",
                     metavar="<PATH>")
+    p.add_argument("-a", "--append", help="appends a line to a file",
+                    nargs=2, metavar=("<PATH>", "<STRING>"))
+    p.add_argument("-w", "--write", help="Writes a string to a file",
+                    nargs=2, metavar=("<PATH>", "<STRING>"))
+    
 
     # Parses Namespace into usable objects (Strings and lists)
     args = p.parse_args()
@@ -145,3 +153,11 @@ if __name__ == "__main__":
     if args.read != None:
         for i in read(args.read):
             print(i)
+    if args.append != None:
+        optn = input("Are you sure you want to write to a file? [y/n]")
+        if optn == "y":
+            append(args.append[0], args.append[1])
+    if args.write != None:
+        optn = input("Are you sure you want to write to a file? [y/n]")
+        if optn == "y":
+            write(args.write[0], args.write[1])

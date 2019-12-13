@@ -56,7 +56,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
 
     # Adding arguments for each function above.
-    # Usage:
+    # Usage: bookreturn.py [-h] [-r <BOOKID>]
     p.add_argument("-r", "--returnbook", help="returns a book that was borrowed",
                    metavar="<BOOKID>")
 

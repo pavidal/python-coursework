@@ -69,7 +69,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
 
     # Adding arguments for each function above.
-    # Usage: TODO
+    # Usage: booklist.py [-h] [-m <DAYS>] [-f <DAYS>]
     p.add_argument("-m", "--month", help="popularity for the past 30 days",
                     metavar="<DAYS>", type=int)
     p.add_argument("-f", "--filtermonth", help="popularity for the past 30 days",
