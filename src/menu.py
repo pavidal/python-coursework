@@ -115,7 +115,6 @@ def search():
         "Title & Author"    : bs.search(term),
         "ID"                : bs.bookID(term),
         "Date"              : bs.dateRange(term, term2),
-        "Status"            : bs.borrowed(bool(term))
     }
     query = searchBy[opt]   # Make & stores a query (2D list)
 
@@ -353,7 +352,7 @@ searchBtn.grid(column=2, row=0, padx=5, pady=5)
 
 # Search options drop list. Chooses which field to search.
 # Every time the option is changed, checkIfDate() is called.
-options = ["Title & Author", "ID", "Date", "Status"]
+options = ["Title & Author", "ID", "Date"]
 var = StringVar(toolbar)
 searchOptn = OptionMenu(toolbar, var, *options, command=checkIfDate)
 var.set(options[0])         # Sets default option
