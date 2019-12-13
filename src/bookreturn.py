@@ -1,3 +1,7 @@
+"""
+Module for returning books. Modifies the database (changes MemberID) and appends to log file.
+"""
+
 import database as db
 import booksearch as bs
 

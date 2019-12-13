@@ -1,3 +1,8 @@
+"""
+Marks a book as being on loan to a Member ID. 
+Modifies database and writes to log file.
+"""
+
 import database as db
 import booksearch as bs
 

@@ -1,3 +1,8 @@
+"""
+Filters the log file to calculate the popularity of a title.
+"""
+
+
 def monthly(dateRange):
     """
     Gets log entries in a date range from today.

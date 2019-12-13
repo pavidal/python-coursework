@@ -1,3 +1,10 @@
+"""
+This is the GUI module. It is responsible for controlling and displaying
+results from other modules.
+
+There is no testing code in this module.
+"""
+
 from tkinter import (Tk, messagebox, Frame, Label,
                      Button, Entry, OptionMenu, StringVar)
 from tkinter.ttk import (Treeview, Scrollbar)

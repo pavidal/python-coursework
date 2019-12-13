@@ -1,6 +1,9 @@
+"""
+This module performs IO operations for the other modules.
+"""
+
 __DB__ = "database.txt"
 __LOG__ = "logfile.txt"
-__SET__ = "settings.json"
 __SEP__ = "|"
 
 

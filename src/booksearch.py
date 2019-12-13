@@ -1,3 +1,7 @@
+"""
+Module containing all searching functions.
+"""
+
 import database
 
 
